@@ -42,7 +42,7 @@ public class Magnet : MonoBehaviour
         }
         else if (rbToAttract.velocity != Vector3.zero)
         {
-            rbToAttract.velocity = Vector3.zero;
+            //rbToAttract.velocity = Vector3.zero;
         }
     }
     private void OnDrawGizmosSelected()
