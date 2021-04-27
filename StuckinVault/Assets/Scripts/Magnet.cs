@@ -4,50 +4,66 @@ using UnityEngine;
 
 public class Magnet : MonoBehaviour
 {
-    public float pullForce_;
+    public float pullForce_ = 0.1f;
     public float minDistance_;
-    private Rigidbody rb;
 
-    private Rigidbody player_;
+    private float currentPull_;
+
+    private GameObject player_;
+    [HideInInspector]
+    public bool isPulling_ = false;
+    private bool decreasedPull_ = false;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        player_ = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
-        if (rb == null)
-        {
-            Debug.Log("rigidbody missing for magnet with name: " + gameObject.name);
-        }
+        currentPull_ = pullForce_;
+        player_ = GameObject.FindGameObjectWithTag("Player");
+        
         if (player_ == null)
         {
-            Debug.Log("rigidbody missing for player object");
+            Debug.LogError("couldnt find object with tag player");
         }
     }
     private void FixedUpdate()
     {
-
         Attract(player_);
     }
-    void Attract(Rigidbody rbToAttract)
+    void Attract(GameObject objToAttract)
     {
-        Vector3 direction = rb.position - rbToAttract.position;
-        float distance = Vector3.Distance(rb.position, rbToAttract.position);
+        float distance = Vector3.Distance(transform.position, objToAttract.transform.position);
 
-        float forceMagnitude = pullForce_ * (rb.mass * rbToAttract.mass) / Mathf.Pow(distance, 2);
-        Vector3 force = direction.normalized * forceMagnitude;
         if (distance < minDistance_)
         {
-            Debug.Log("W");
-            rbToAttract.AddForce(force);
+            isPulling_ = true;
+            objToAttract.transform.position = Vector3.MoveTowards(objToAttract.transform.position, transform.position, currentPull_ * Time.deltaTime);
+            Debug.Log(currentPull_);
         }
-        else if (rbToAttract.velocity != Vector3.zero)
+        else
         {
-            //rbToAttract.velocity = Vector3.zero;
+            if (isPulling_ == true)
+                isPulling_ = false;
         }
     }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(1, 1, 0, 0.75F);
         Gizmos.DrawSphere(transform.position, minDistance_);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            if (decreasedPull_ == false)
+            {
+                
+                currentPull_ = pullForce_ / 2;
+            }
+        }
+        
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+            
     }
 }
