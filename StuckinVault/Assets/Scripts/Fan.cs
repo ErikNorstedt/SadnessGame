@@ -26,7 +26,7 @@ public class Fan : MonoBehaviour
     }
     void Push(GameObject objToAttract)
     {
-        Vector3 direction =  objToAttract.transform.position - transform.position;
+        Vector3 direction = new Vector3(0, 0, -1);
         float distance = Vector3.Distance(transform.position, objToAttract.transform.position);
 
         float appliedForce = fanForce_ / (1.0f + distance * distance);
