@@ -64,7 +64,6 @@ public class simpleMove : MonoBehaviour
             
 
             Vector3 moveDirection = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
-            Debug.Log(moveDirection);
             transform.position += moveDirection * speed_ * Time.deltaTime;
         }
         
