@@ -9,10 +9,14 @@ public class Magnet : MonoBehaviour
 
     private float currentPull_;
 
+    
     private GameObject player_;
     [HideInInspector]
     public bool isPulling_ = false;
     private bool decreasedPull_ = false;
+
+    private int segments_ = 20;
+    LineRenderer line_;
 
     private void Start()
     {
@@ -23,6 +27,12 @@ public class Magnet : MonoBehaviour
         {
             Debug.LogError("couldnt find object with tag player");
         }
+        line_ = GetComponent<LineRenderer>();
+        line_.positionCount = segments_ + 1;
+        line_.useWorldSpace = false;
+        createPoints();
+
+
     }
     private void FixedUpdate()
     {
@@ -34,20 +44,20 @@ public class Magnet : MonoBehaviour
 
         if (distance < minDistance_)
         {
+            if(isPulling_ == false)
+                player_.GetComponent<simpleMove>().changeState();
             isPulling_ = true;
             objToAttract.transform.position = Vector3.MoveTowards(objToAttract.transform.position, transform.position, currentPull_ * Time.deltaTime);
-            Debug.Log(currentPull_);
         }
         else
         {
             if (isPulling_ == true)
+            {
+                player_.GetComponent<simpleMove>().changeState();
                 isPulling_ = false;
+            }
+                
         }
-    }
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(1, 1, 0, 0.75F);
-        Gizmos.DrawSphere(transform.position, minDistance_);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -62,8 +72,24 @@ public class Magnet : MonoBehaviour
         }
         
     }
-    private void OnCollisionEnter(Collision collision)
+    void createPoints()
     {
-            
+        float x;
+        float y = -0.2f;
+        float z;
+
+        float angle = 20f;
+
+        for (int i = 0; i < (segments_ + 1); i++)
+        {
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * minDistance_;
+            z = Mathf.Cos(Mathf.Deg2Rad * angle) * minDistance_;
+
+            line_.SetPosition(i, new Vector3(x, y, z));
+
+            angle += (360f / segments_);
+        }
     }
+
+
 }
