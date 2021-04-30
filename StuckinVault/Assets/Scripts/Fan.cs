@@ -6,6 +6,7 @@ public class Fan : MonoBehaviour
 {
     public float fanForce_ = 0.1f;
     public float minDistance_;
+    public float playerDistance_;
 
     private GameObject player_;
     private Rigidbody playerRb_;
@@ -25,11 +26,18 @@ public class Fan : MonoBehaviour
         if(Win.won == false)
         {
             Push(player_);
+
+            if(ifClose())
+            {
+                AudioManager.playRandomBadThought();
+            }
+            
         }
         else
         {
             playerRb_.velocity = Vector3.zero;
         }
+
     }
     void Push(GameObject objToAttract)
     {
@@ -48,6 +56,11 @@ public class Fan : MonoBehaviour
         }
     }
 
+    bool ifClose()
+    {
+        float distance = Vector3.Distance(transform.position, player_.transform.position);
+        return distance <= playerDistance_;
+    }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(1, 0, 0, 0.3F);
