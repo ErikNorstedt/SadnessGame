@@ -23,26 +23,27 @@ public class simpleMove : MonoBehaviour
 
     private void Update()
     {
-        xDir_ = Input.GetAxis("Horizontal");
-        zDir_ = Input.GetAxis("Vertical");
+        if (Win.won == false)
+        {
+            xDir_ = Input.GetAxis("Horizontal");
+            zDir_ = Input.GetAxis("Vertical");
 
-        Vector3 moveDir = new Vector3(xDir_, 0, zDir_);
-        if (moveDir.x != 0 && moveDir.z != 0)
-        {
-            lastDir_ = moveDir;
-        }
+            Vector3 moveDir = new Vector3(xDir_, 0, zDir_);
+            if (moveDir.x != 0 && moveDir.z != 0)
+            {
+                lastDir_ = moveDir;
+            }
         
-        switch (currentState_)
-        {
-            case state.NOTSTUCK:
-                //Debug.Log("notstuck");
-                nonStuckMove(moveDir);
-                break;
-            case state.STUCK:
-                stuckMove(lastDir_);
-                break;
+            switch (currentState_)
+            {
+                case state.NOTSTUCK:
+                    nonStuckMove(moveDir);
+                    break;
+                case state.STUCK:
+                    stuckMove(lastDir_);
+                    break;
+            }
         }
-        //rotatePlayer();
     }
     public float stuckMultiplier = 10;
 
@@ -105,31 +106,31 @@ public class simpleMove : MonoBehaviour
         {
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             return true;
         }
