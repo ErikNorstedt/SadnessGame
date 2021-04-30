@@ -22,7 +22,14 @@ public class Fan : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Push(player_);
+        if(Win.won == false)
+        {
+            Push(player_);
+        }
+        else
+        {
+            playerRb_.velocity = Vector3.zero;
+        }
     }
     void Push(GameObject objToAttract)
     {
