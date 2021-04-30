@@ -9,8 +9,6 @@ public class AudioManager : MonoBehaviour
     public AudioSource clipSource_;
     public AudioSource clockSource_;
 
-    float randomTimer_;
-    float timer_ = 0;
     private void Awake()
     {
         if (instance_ == null)
@@ -22,29 +20,25 @@ public class AudioManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-        randomTimer_ = Random.Range(4, 7);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Win.won == false)
-        {
-            timer_ += Time.deltaTime;
-            if (timer_ >= randomTimer_)
-            {
-                playRandomBadThought();
-                randomTimer_ = Random.Range(4, 7);
-                timer_ = 0;
-            }
-        }    
+        
     }
 
-    void playRandomBadThought()
+    public static void playRandomBadThought()
     {
-        instance_.clipSource_.Stop();
+        if (instance_.clipSource_.isPlaying == true)
+            return;
         instance_.clipSource_.clip = instance_.clips_[Random.Range(1,instance_.clips_.Length - 1)];
         instance_.clipSource_.Play();
+    }
+
+    public static bool isPlaying()
+    {
+        return instance_.clipSource_.isPlaying;
     }
 
     public static void playGoodConversation()
