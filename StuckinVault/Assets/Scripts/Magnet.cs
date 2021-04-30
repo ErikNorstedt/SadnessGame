@@ -15,8 +15,7 @@ public class Magnet : MonoBehaviour
     public bool isPulling_ = false;
     private bool decreasedPull_ = false;
 
-    private int segments_ = 20;
-    LineRenderer line_;
+   
 
     private void Start()
     {
@@ -27,10 +26,7 @@ public class Magnet : MonoBehaviour
         {
             Debug.LogError("couldnt find object with tag player");
         }
-        line_ = GetComponent<LineRenderer>();
-        line_.positionCount = segments_ + 1;
-        line_.useWorldSpace = false;
-        createPoints();
+       
 
 
     }
@@ -72,24 +68,11 @@ public class Magnet : MonoBehaviour
         }
         
     }
-    void createPoints()
+  
+    private void OnDrawGizmos()
     {
-        float x;
-        float y = -0.2f;
-        float z;
-
-        float angle = 20f;
-
-        for (int i = 0; i < (segments_ + 1); i++)
-        {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * minDistance_;
-            z = Mathf.Cos(Mathf.Deg2Rad * angle) * minDistance_;
-
-            line_.SetPosition(i, new Vector3(x, y, z));
-
-            angle += (360f / segments_);
-        }
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawSphere(transform.position, minDistance_);
     }
-
 
 }
